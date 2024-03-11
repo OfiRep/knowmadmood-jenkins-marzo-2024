@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '7',
+                                  daysToKeepStr: '10'))
+        timestamps()
+    }
+
+    parameters{
+        string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins',
+        description: 'ruta de origen del fichero')
+
+    /*parameters{
+        string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins',
+        description: 'ruta de origen del fichero')
+
+    parameters{
+        string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins',
+        description: 'ruta de origen del fichero')
+    }*/
+
+    stages{
+        stage('Clean WorkSpace'){
+            steps {
+                cleanWs()
+            }
+        }
+}
