@@ -8,7 +8,10 @@ pipeline {
     }
 
     parameters {
-        string (name: 'ORIGIN_PATH', description: 'Ruta del archivo a comprimir', trim: true, defaultValue: '/home/jenkins')
+        string (name: 'SOURCE_PATH', description: 'Ruta del archivo a comprimir', trim: true, defaultValue: '/home/jenkins/projects/development-pipeline/maikelalonsobana-zip-file/myFile')
+        string (name: 'TARGET_PATH', description: 'Ruta de destino del archivo comprimido', trim: true, defaultValue: '/home/jenkins/projects/development-pipeline/maikelalonsobana-zip-file/myFile.7z')
+        string (name: 'NUMBER_OF_CORES', description: 'Número de núcleos a utilizar para comprimir', trim: true, defaultValue: '2')
+        choice (name: 'COMPRESSION_LEVEL', description: 'Selecciona el nivel de compresión deseado', choices: ['Fastest','Fast','Normal','Maximum','Ultra'], defaultValue: 'Ultra')
     }
 
     stages {
@@ -28,3 +31,4 @@ pipeline {
         }
     }
 }
+/* 7za a -r -mmt2 /home/jenkins/projects/development-pipeline/maikelalonsobana-zip-file/Jenkinsfile.7z /home/jenkins/projects/development-pipeline/maikelalonsobana-zip-file/Jenkinsfile -mx9 */
