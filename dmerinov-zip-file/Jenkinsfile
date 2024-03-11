@@ -9,7 +9,16 @@ pipeline {
 
     parameters{
         string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins',
-        description: 'ruta de origen del fichero')}
+        description: 'ruta de origen del fichero')
+
+        string(name: 'DESTINATION_FILE', defaultValue: '/Users/dmerinov/Desktop/colaborativoJenkins/knowmadmood-jenkins-marzo-2024/dmerinov-zip-file/Jenkinsfile.7z',
+        description: 'ruta de destino del fichero')
+        
+        string(name: 'CPU_CORES', defaultValue: '2',
+        description: 'num cores que se usan en la tarea')
+    
+        choice(name: 'COMPRESS_TYPE', choices: ['Fastest','Fast','Normal','Maximum','Ultra'],
+        description: 'tipo de compresion')}
 
     stages {
         stage('Clean WorkSpace') {
@@ -19,3 +28,7 @@ pipeline {
         }
     }
 }
+
+/*
+7z a -r -mmt2 /Users/dmerinov/Desktop/colaborativoJenkins/knowmadmood-jenkins-marzo-2024/dmerinov-zip-file/Jenkinsfile.7z /Users/dmerinov/Desktop/colaborativoJenkins/knowmadmood-jenkins-marzo-2024/david_merino_vecino/Jenkinsfile -mx9
+*/
