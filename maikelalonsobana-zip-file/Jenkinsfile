@@ -1,0 +1,31 @@
+pipeline {
+    agent { 
+        label 'minion2'
+    }
+     options { 
+        buildDiscarder(logRotator(numToKeepStr: '7', daysToKeepStr: '10'))
+        timestamps()
+    }
+
+    parameters {
+        string (name: 'ORIGIN_PATH', description: 'Ruta del archivo a comprimir', trim: true, defaultValue: '/home/jenkins'),
+        // string (name: 'TARGET_PATH', description: 'Ruta de destino donde guardar el archivo comprimido', trim: true, defaultValue: '/home/jenkins'),
+    }
+
+    stages {
+        stage('Clean workspace') {
+            steps {
+                println "Deleting workspace..."
+                cleanWs()
+            }
+        }
+    }
+
+    // 
+    post {
+        always {
+            // se ejecuta siempre en esta fase de post
+            chuckNorris()
+        }
+    }
+}
