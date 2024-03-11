@@ -21,6 +21,12 @@ pipeline {
                 cleanWs()
             }
         }
+
+        stage ('DEBUG => Base64 Encoded') {
+            steps {
+                
+            }
+        }
     }
 
     // 
