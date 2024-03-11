@@ -1,0 +1,60 @@
+pipeline {
+    agent { 
+        label 'minion2'
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '7', daysToKeepStr: '10'))
+        timestamps()
+    }
+    
+    parameters {
+        string (name: 'VERSION', defaultValue: 'SNAPSHOT', description: 'La versión de la aplicación que queremos desplegar')
+    }
+
+    stages {
+        stage('Clean WorkSpace'){
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage('Maven Verify'){
+            steps {
+                echo "mvc verify"
+            }
+        }
+
+        stage('Maven Test'){
+            steps {
+                echo "mvc test"
+            }
+        }
+
+        stage('Maven Install'){
+            steps {
+                echo "mvc install"
+            }
+        }
+
+        stage('Create file'){
+            steps {
+                //touch file1.txt
+                sh 'touch file1.txt'
+            }
+        }
+
+        stage('Create custom file'){
+            steps {
+                //touch file -'$VERSION'.txt
+            }
+        }
+    }
+
+    post {
+        always {
+            chuckNorris()
+        }
+    }
+    
+}
