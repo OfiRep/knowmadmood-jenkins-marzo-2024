@@ -9,7 +9,11 @@ pipeline {
     }
     
     parameters {
-        string (name: 'ORIGIN_FILE', defaultValue: '/home/jenkins', description: 'El nombre del archivo de origen a comprimir.')
+        string (name: 'ORIGIN_FILE', defaultValue: '/home/jenkins/myfile', description: 'El nombre del archivo de origen.')
+        string (name: 'DESTINATION_FILE', defaultValue: '/home/jenkins/myfile.7z', description: 'El nombre del archivo comprimido.')
+        string (name: 'CPU_CORES', defaultValue: '2', description: 'El número de nucleos de CPU que se usaran para el proceso de compresión.')
+        string (name: 'CPU_CORES', defaultValue: '2', description: 'El número de nucleos de CPU que se usaran para el proceso de compresión.')
+        choice (name: 'COMPRESS_TYPE', choices: ['Fastest', 'Fast', 'Normal', 'Maximum', 'Ultra'], description: 'Selecciona el nivel de compresión deseado.')
     }
 
     stages {
@@ -27,3 +31,11 @@ pipeline {
     }
     
 }
+
+/*
+7za a -r 
+-mmt2 
+/home/jenkins/projects/development-pipeline/knowmadmood-jenkins-marzo-2024/fran-gait-zip-file/Jenkinsfile.7z 
+/home/jenkins/projects/development-pipeline/knowmadmood-jenkins-marzo-2024/fran-gait-zip-file/Jenkinsfile 
+-mx9 
+*/
