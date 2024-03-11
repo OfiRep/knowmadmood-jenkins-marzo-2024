@@ -8,10 +8,10 @@ pipeline{
     }
 
     parameters {
-        string(name: 'ORIGIN_FILE',defaultValue: '/home/jenkins/myfile',description:'el nombre del fichero de origen a comprimir')
-        string(name:'DESTINATION_FILE',defaultValue:'/home/jenkins/myfile.7z',description:'el nombre del archivo que tiene que tener mi archivo comprimido')
-        string(name:'CPU_CORES', defaultValues:'2',description:'Numero de cores con los que se realiza la compresion')
-        choices(name:'COMPRSS_TYPE',choices:{'FASTEST','NORMAL','MAXIMUM','ULTRA'},description:'Selecciona el nivel de compresion que vamos a utilizar')
+        string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins/myfile',description:'el nombre del fichero de origen a comprimir')
+        string(name: 'DESTINATION_FILE', defaultValue:'/home/jenkins/myfile.7z',description:'el nombre del archivo que tiene que tener mi archivo comprimido')
+        string(name: 'CPU_CORES', defaultValues:'2',description:'Numero de cores con los que se realiza la compresion')
+        choices(name: 'COMPRSS_TYPE', choices:['FASTEST','NORMAL','MAXIMUM','ULTRA'],description:'Selecciona el nivel de compresion que vamos a utilizar')
     }
 
     stages{
