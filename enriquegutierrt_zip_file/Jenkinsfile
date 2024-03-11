@@ -1,0 +1,27 @@
+pipeline{
+    agent {label 'minion2'}
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '7',
+                                  daysToKeepStr: '10'))
+        timestamps()                           
+    }
+
+    parameters {
+        string(name: 'ORIGIN_FILE',defaultValue: '/home/jenkins',description:'el nombre del fichero de origen a comprimir')
+    }
+
+    stages{
+        stage ('Limpiar Workspace'){
+            steps {
+                cleanWs()
+            }
+        }
+
+    }
+    post {
+        always {
+            chuckNorris()
+        }
+    }
+}
