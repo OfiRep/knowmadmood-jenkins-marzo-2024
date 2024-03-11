@@ -1,0 +1,60 @@
+pipeline{
+    agent {label 'minion2'}
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '7',
+                                  daysToKeepStr: '10'))
+        timestamps()                           
+    }
+
+    parameters {
+        string(name: 'VERSION',defaultValue: 'SNAPSHOT',description:'la verrsion del parametro que vamos a ejecutar')
+    }
+
+    stages{
+        stage ('Limpiar Workspace'){
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage ('Maven verify'){
+            steps {
+                //echo "mvn verify"
+                println "mvn verify"
+            }
+        }
+
+        stage ('Maven test'){
+            steps {
+                //echo "mvn test"
+                println "mvn test"
+            }
+        }
+        stage ('Maven install'){
+            steps {
+                //echo "mvn install"
+                println "mvn install"
+            }
+        }
+
+        stage ('Create file'){
+            steps {
+
+                //touch file1.txt
+                sh 'touch file1.txt'
+            }
+        }
+
+        stage ('Create custom file'){
+            steps {
+                sh 'touch file-"$VERSION".txt'
+            }
+        }
+    }
+    post {
+        always {
+            chuckNorris()
+        }
+    }
+}
