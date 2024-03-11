@@ -8,16 +8,26 @@ pipeline{
     }
 
     parameters {
-        string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins/myfile',description:'el nombre del fichero de origen a comprimir')
-        string(name: 'DESTINATION_FILE', defaultValue:'/home/jenkins/myfile.7z',description:'el nombre del archivo que tiene que tener mi archivo comprimido')
-        string(name: 'CPU_CORES', defaultValues:'2',description:'Numero de cores con los que se realiza la compresion')
-        choices(name: 'COMPRSS_TYPE', choices:['FASTEST','NORMAL','MAXIMUM','ULTRA'],description:'Selecciona el nivel de compresion que vamos a utilizar')
+        choice{name: 'PARAMETERS_IN_BASE64', choices: ['No','Yes'],description: 'Indicacion del codex'}
+        string(name: 'ORIGIN_FILE',defaultValue: '/home/jenkins/myfile',description:'el nombre del fichero de origen a comprimir')
+        string(name:'DESTINATION_FILE',defaultValue:'/home/jenkins/myfile.7z',description:'el nombre del archivo que tiene que tener mi archivo comprimido')
+        string(name:'CPU_CORES', defaultValues:'2',description:'Numero de cores con los que se realiza la compresion')
+        choice(name:'COMPRSS_TYPE',choices:['FASTEST','NORMAL','MAXIMUM','ULTRA'],description:'Selecciona el nivel de compresion que vamos a utilizar')
     }
 
     stages{
         stage ('Limpiar Workspace'){
             steps {
                 cleanWs()
+            }
+        }
+
+        stage (DEBUG -> BASE64) {
+            steps {
+                println "ORIGIN_FILE: "+ "$ORIGIN_FILE"
+                println "DESTINATION_FILE: "+"$DESTINATION_FFILE"
+                println "CPU_CORES: "+"$CPU_CORES"
+                println "COMPRESS_TYPE: "+"$COMPRESS_TYPE"
             }
         }
 
@@ -28,3 +38,4 @@ pipeline{
         }
     }
 }
+//7za a -r -mmt2 /home/jenkins/projects/development-pipeline/enriquegutierrt_zip_file/Jenkinsfile.7z /home/jenkins/projects/development-pipeline/enriquegutierrt_zip_file/Jenkinsfile -mx9
