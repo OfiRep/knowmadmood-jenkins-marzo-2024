@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+    options {
+        buildDiscarder(logRotator(numToKeeStr: '7', daysToKeepStr: '10'))
+
+        timestamps()
+    }
+
+    parameters {
+        string(name: 'VERSION', defaultValue: 'SNAPSHOT')
+    }
+
+    stages {
+        stage('PASO 1') {
+            steps {
+                cleanWs()
+            }
+        
+            steps {
+                echo 'Hello World'
+            }
+        }
+
+        stage('Maven Verify') {
+            steps {
+                echo 'mvn verify'
+            }
+        }
+
+
+        stage('Create file') {
+            steps {
+                //touch file.txt
+                sh 'touch file-$VERSION.txt'
+            }
+        }
+    }
+
+    post {
+        success {
+
+        }
+
+        failure {
+
+        }
+
+        abort {
+
+        }
+    }
+}
