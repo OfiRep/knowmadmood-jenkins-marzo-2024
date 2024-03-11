@@ -1,37 +1,30 @@
-pipeline{
-    agent {label 'minion2'}
+ 
+pipeline {
+    agent {
+        label 'minion2'
+    }
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '7',
                                   daysToKeepStr: '10'))
-        timestamps()                           
+        timestamps()
     }
 
     parameters {
-        choice{name: 'PARAMETERS_IN_BASE64', choices: ['No','Yes'],description: 'Indicacion del codex'}
-        string(name: 'ORIGIN_FILE',defaultValue: '/home/jenkins/myfile',description:'el nombre del fichero de origen a comprimir')
-        string(name:'DESTINATION_FILE',defaultValue:'/home/jenkins/myfile.7z',description:'el nombre del archivo que tiene que tener mi archivo comprimido')
-        string(name:'CPU_CORES', defaultValues:'2',description:'Numero de cores con los que se realiza la compresion')
-        choice(name:'COMPRSS_TYPE',choices:['FASTEST','NORMAL','MAXIMUM','ULTRA'],description:'Selecciona el nivel de compresion que vamos a utilizar')
+        string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins/myfile', description: 'El nombre del archivo de origen a comprimir.')
+        string(name: 'DESTINATION_FILE', defaultValue: '/home/jenkins/myfile.7z', description: 'El nombre del archivo comprimido que quieres tener.')
+        string(name: 'CPU_CORES', defaultValue: '2', description: 'El número de núcleos de CPU que se usarán para el proceso de compresión.')
+        choice(name: 'COMPRESS_TYPE', choices: ['Fastest', 'Fast', 'Normal', 'Maximum', 'Ultra'], description: 'Selecciona el nivel de compresión deseado.')
     }
 
-    stages{
-        stage ('Limpiar Workspace'){
+    stages {
+        stage ('Clean WorkSpace') {
             steps {
                 cleanWs()
             }
         }
-
-        stage (DEBUG -> BASE64) {
-            steps {
-                println "ORIGIN_FILE: "+ "$ORIGIN_FILE"
-                println "DESTINATION_FILE: "+"$DESTINATION_FFILE"
-                println "CPU_CORES: "+"$CPU_CORES"
-                println "COMPRESS_TYPE: "+"$COMPRESS_TYPE"
-            }
-        }
-
     }
+
     post {
         always {
             chuckNorris()
