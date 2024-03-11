@@ -8,8 +8,7 @@ pipeline {
     }
 
     parameters {
-        string (name: 'ORIGIN_PATH', description: 'Ruta del archivo a comprimir', trim: true, defaultValue: '/home/jenkins'),
-        // string (name: 'TARGET_PATH', description: 'Ruta de destino donde guardar el archivo comprimido', trim: true, defaultValue: '/home/jenkins'),
+        string (name: 'ORIGIN_PATH', description: 'Ruta del archivo a comprimir', trim: true, defaultValue: '/home/jenkins')
     }
 
     stages {
