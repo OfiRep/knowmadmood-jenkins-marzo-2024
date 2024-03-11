@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+    
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '7', 
+                                  daysToKeepStr: '10'))
+    }
+    
+    parameters {
+        string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins/myfile', description: 'ruta absoluta del fichero origen')
+        string(name: 'DESTINATION_FILE', defaultValue: '/home/jenkins/myfile.7z', description: 'ruta absoluta del fichero destino')
+        string(name: 'CPU_CORES', defaultValue: '2', description: 'El número de núcleos que se usarán para el proceso de compresión')
+        choice(name: 'COMPRESS_TYPE', choices: ['Fastest', 'Fast', 'Normal', 'Maximum', 'Ultra'], description: 'Selecciona el nivel de descompresión deseado')
+    }
+    
+    stages {
+        stage ('Clean WorkSpace'){
+            steps {
+                cleanWs()
+            }
+        }
+    stage ('Maven Test'){
+        steps {
+            println "mvn verify"
+        }
+    }
+    
+    stage ('Maven Install'){
+        steps {
+            echo "mvn install"
+        }
+    }
+    stage ('Create file'){
+        steps {
+            sh 'touch file1.txt'
+        }
+    }
+    stage ('Maven verify'){
+        steps {
+            echo "mvn verify"
+        }
+    }
+    stage ('Create custom file'){
+        steps {
+            sh 'touch file1-$VERSION.txt'
+        }
+    }
+    }
+    
+    post {
+        always {
+            chuckNorris()
+        }
+        
+    }
+}
