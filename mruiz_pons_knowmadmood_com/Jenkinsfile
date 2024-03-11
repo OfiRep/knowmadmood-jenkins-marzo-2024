@@ -8,6 +8,8 @@ pipeline {
     
     parameters {
         string(name: 'VERSION', defaultValue: 'SNAPSHOT', description: 'La version de la aplicacion que queremos desplegar')
+        string(name: 'ORIGIN_FILE', description: 'ruta absoluta del fichero origen', defaultValue: '/home/jenkins')
+        string(name: 'DESTINATION_FILE', description: 'ruta absoluta del fichero origen')
     }
     
     stages {
