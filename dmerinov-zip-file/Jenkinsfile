@@ -26,6 +26,21 @@ pipeline {
                 cleanWs()
             }
         }
+
+        stage('DEBUG -> Base64 Encoded') {
+            steps {
+                println "ORIGIN_FILE: $ORIGIN_FILE"
+            }
+            steps {
+                println "DESTINATION_FILE: $DESTINATION_FILE"
+            }
+            steps {
+                println "CPU_CORES: $CPU_CORES"
+            }
+            steps {
+                println "COMPRESS_TYPE: $COMPRESS_TYPE"
+            }
+        }
     }
 }
 
