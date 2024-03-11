@@ -10,7 +10,10 @@ pipeline {
     }
 
     parameters {
-        string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins', description: 'El nombre del archivo de origen a comprimir.')
+        string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins/myfile', description: 'El nombre del archivo de origen a comprimir.')
+        string(name: 'DESTINATION_FILE', defaultValue: '/home/jenkins/myfile.7z', description: 'El nombre del archivo comprimido que quieres tener.')
+        string(name: 'CPU_CORES', defaultValue: '2', description: 'El número de núcleos de CPU que se usarán para el proceso de compresión.')
+        choice(name: 'COMPRESS_TYPE', choices: ['Fastest', 'Fast', 'Normal', 'Maximum', 'Ultra'], description: 'Selecciona el nivel de compresión deseado.')
     }
 
     stages {
@@ -27,3 +30,8 @@ pipeline {
         }
     }
 }
+
+
+/*7za a -r -mmt2 /home/jenkins/projects/development-pipeline/ofirep-zip-file/Jenkinsfile.7z /home/jenkins/projects/development-pipeline/ofirep-zip-file/Jenkinsfile -mx9*/
+
+
