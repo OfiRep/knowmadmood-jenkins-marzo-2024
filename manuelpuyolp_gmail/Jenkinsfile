@@ -6,52 +6,17 @@ pipeline {
     }
 
     parameters { 
-        string(name: 'VERSION', defaultValue: 'SNAPSHOT', description: 'La version de la aplicacion') 
+        string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins', description: 'Donde se encuentra el fichero de origen a comprimir') 
     }
 
     stages {
-        stage('ExLimpiar WorkSpace') {
+        stage('Limpiar WorkSpace') {
                        
             steps {
                 cleanWs()
             }
         }
-        stage('Maven Verify') {
-                       
-            steps {
-                echo "mvn verify"
-                echo "*************************************************************"
-                println "mvn verify"
-            }
-        }
-
-        stage('Maven Test') {
-                       
-            steps {
-                echo "mvn test"
-            }
-        }
-
-        stage('Maven Install') {
-                       
-            steps {
-                echo "mvn install"
-            }
-        }
-
-        stage('Create file') {
-                       
-            steps {
-                sh 'touch file1.txt'
-            }
-        }
-        stage('Create custon file') {
-                       
-            steps {
-                sh 'touch file1-"$VERSION".txt'
-            }
-        }
-
+        
         
     }
     post { 
