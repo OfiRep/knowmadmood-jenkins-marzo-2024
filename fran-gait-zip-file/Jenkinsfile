@@ -1,23 +1,11 @@
+@Library('knowmadmood-shared-library')
+
+import main.groovy.com.knowmadmood.ejb.KnowMadMoodEJB
+
 def decodeOriginFile = ""
 def decodeDestinationFile = ""
 def decodeCpuCores = ""
 def decodeCompressType = ""
-
-def base64Decode(inputString){
-     if (inputString == null || inputString.trim() == '') {
-        println("El parámetro es nulo o está vacío.")
-        return null
-    }
-    
-    def trimmedString = inputString.trim()
-    if ("$PARAMETERS_IN_BASE64" == "Yes"){
-        byte[] decoded = trimmedString.decodeBase64()
-        return new String(decoded)
-    }else{
-        return trimmedString
-    }
-}
-
 
 pipeline {
     agent { 
@@ -57,11 +45,17 @@ pipeline {
         stage('Decode from Base64'){
             steps {
                 script {
-                    
-                    decodeOriginFile = base64Decode("$ORIGIN_FILE")
-                    decodeDestinationFile = base64Decode("$DESTINATION_FILE")
-                    decodeCpuCores = base64Decode("$CPU_CORES")
-                    decodeCompressType = base64Decode("$COMPRESS_TYPE")
+                    if("$PARAMETERS_IN_BASE64" == 'Yes'){
+                        decodeOriginFile = KnowMadMoodEJB.decodeBase64("$ORIGIN_FILE")
+                        decodeDestinationFile = KnowMadMoodEJB.decodeBase64("$DESTINATION_FILE")
+                        decodeCpuCores = KnowMadMoodEJB.decodeBase64("$CPU_CORES")
+                        decodeCompressType = KnowMadMoodEJB.decodeBase64("$COMPRESS_TYPE")
+                    }else {
+                        decodeOriginFile = "$ORIGIN_FILE"
+                        decodeDestinationFile = "$DESTINATION_FILE"
+                        decodeCpuCores = "$CPU_CORES"
+                        decodeCompressType = "$COMPRESS_TYPE"
+                    }
                 }
             }
         }
@@ -91,4 +85,41 @@ pipeline {
 /home/jenkins/projects/development-pipeline/knowmadmood-jenkins-marzo-2024/fran-gait-zip-file/Jenkinsfile.7z 
 /home/jenkins/projects/development-pipeline/knowmadmood-jenkins-marzo-2024/fran-gait-zip-file/Jenkinsfile 
 -mx9 
+
+localhost:8081/job/fran-gait-zip-file/buildWithParameters?PARAMETERS_IN_BASE64=Yes&ORIGIN_FILE=cHJ1ZWJh&
+DESTINATION_FILE=cHJ1ZWJh&CPU_CORES=cHJ1ZWJh&COMPRESS_TYPE=VWx0cmE=
+
+curl -s -o /dev/null -w "%{http_code}" http://www.example.org/
+
+CRUMB=$(curl -s 'http://localhost:8081/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)')    
+curl --user admin:admin \
+    -X POST localhost:8081/job/fran-gait-zip-file/buildWithParameters?token=mySecretPassword \
+    -H "$CRUMB" \
+    --data-urlencode json='{
+    "parameter": [
+        {"name":"PARAMETERS_IN_BASE64", "value":"Yes"},
+        {"name":"ORIGIN_FILE", "value":"cHJ1ZWJh"},
+        {"name":"DESTINATION_FILE", "value":"cHJ1ZWJh"},
+        {"name":"CPU_CORES", "value":"cHJ1ZWJh"},
+        {"name":"COMPRESS_TYPE", "value":"VWx0cmE"}
+    ]
+}'
+
+curl -X POST http://tu-servidor-jenkins/job/tu-job/build \
+  -H "Authorization: Basic (YWRtaW4=:YWRtaW4=) \
+  --data-urlencode json='{
+    "parameter": [
+        {"name":"PARAMETRO_1", "value":"VALOR_1"},
+        {"name":"PARAMETRO_2", "value":"VALOR_2"}
+    ]
+}'
+
+CRUMB=$(curl -s 'http://localhost:8081/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)')
+curl --user admin:admin -X POST 'localhost:8081/job/fran-gait-zip-file/buildWithParameters?token=mySecretPassword' -H "Jenkins-Crumb:7db09339e731a824bd3ede511ebf26a533dedf399c53039528d2458f856202e9"
+
+
+
+11c3f15b81c6428018c6172d3e04b22fd7
+
+curl --user admin:11c3f15b81c6428018c6172d3e04b22fd7 -X POST http://localhost:8081/job/fran-gait-zip-file/buildWithParameters?token=mySecretPassword&PARAMETERS_IN_BASE64=Yes&ORIGIN_FILE=cHJ1ZWJh&DESTINATION_FILE=cHJ1ZWJh&CPU_CORES=cHJ1ZWJh&COMPRESS_TYPE=VWx0cmE=
 */
