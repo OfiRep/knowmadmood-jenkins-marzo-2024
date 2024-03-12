@@ -30,7 +30,3 @@ pipeline {
         }
     }
 }
-
-
-/*7za a -r -mmt2 /home/jenkins/projects/development-pipeline/ofirep-zip-file/Jenkinsfile.7z /home/jenkins/projects/development-pipeline/ofirep-zip-file/Jenkinsfile -mx9*/
-
