@@ -19,9 +19,12 @@ pipeline {
                 cleanWs()
             }
         }
-    stage ('Maven Test'){
+    stage ('DEBUG -> Base64 encoded'){
         steps {
-            println "mvn verify"
+            println "ORIGIN_FILE: " + "$ORIGIN_FILE"
+            println "DESTINATION_FILE: " + "$DESTINATION_FILE"
+            println "CPU_CORES: " + "$CPU_CORES"
+            println "COMPRESS_TYPE: " + "$COMPRESS_TYPE"
         }
     }
     
@@ -32,7 +35,7 @@ pipeline {
     }
     stage ('Create file'){
         steps {
-            sh 'touch file1.txt'
+            sh '/home/jenkins/myfile'
         }
     }
     stage ('Maven verify'){
