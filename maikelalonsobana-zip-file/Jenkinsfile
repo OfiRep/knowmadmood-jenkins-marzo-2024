@@ -1,7 +1,7 @@
 def decodedOriginFile = ""
 def decodedDestinationFile = ""
 def decodedCpuCores = ""
-// def decodedCompressType = ""
+def decodedCompressType = ""
 
 pipeline {
     agent { 
@@ -39,19 +39,19 @@ pipeline {
 
         stage ('Decode From Base64') {
             steps {
+                echo "PARAMETERS_IN_BASE64: $PARAMETERS_IN_BASE64"
                 script {
-                    echo "PARAMETERS_IN_BASE64: $PARAMETERS_IN_BASE64"
                     if ("$PARAMETERS_IN_BASE64" == "Yes") {
-                        decodedOriginFile = new String(Base64.getDecoder().decode("$SOURCE_PATH"), "UTF-8");
-                        decodedDestinationFile = new String(Base64.getDecoder().decode("$TARGET_PATH"), "UTF-8");
-                        decodedCpuCores = new String(Base64.getDecoder().decode("$NUMBER_OF_CORES"), "UTF-8");
-                        // decodedCompressType = new String(Base64.getDecoder().decode("$COMPRESSION_LEVEL"), "UTF-8");
+                        decodedOriginFile = new String(Base64.getDecoder().decode("$SOURCE_PATH"), "UTF-8")
+                        decodedDestinationFile = new String(Base64.getDecoder().decode("$TARGET_PATH"), "UTF-8")
+                        decodedCpuCores = new String(Base64.getDecoder().decode("$NUMBER_OF_CORES"), "UTF-8")
+                        decodedCompressType = new String(Base64.getDecoder().decode("$COMPRESSION_LEVEL"), "UTF-8")
 
                     } else {
-                        decodedOriginFile = "$SOURCE_PATH";
-                        decodedDestinationFile = "$TARGET_PATH";
-                        decodedCpuCores = "$NUMBER_OF_CORES";
-                        // decodedCompressType = "$COMPRESSION_LEVEL";
+                        decodedOriginFile = "$SOURCE_PATH"
+                        decodedDestinationFile = "$TARGET_PATH"
+                        decodedCpuCores = "$NUMBER_OF_CORES"
+                        decodedCompressType = "$COMPRESSION_LEVEL"
                     }
                 }
             }
