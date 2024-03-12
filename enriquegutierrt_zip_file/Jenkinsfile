@@ -50,7 +50,7 @@ pipeline {
                     }
                     else {
                         decodedOriginFile = "$ORIGIN_FILE"
-                        decodedDestinationFile = "$DESTINATION__FILE"
+                        decodedDestinationFile = "$DESTINATION_FILE"
                         decodedCpuCores = "$CPU_CORES"
                         decodedCompressType = "$COMPRESS_TYPE"
                     }
