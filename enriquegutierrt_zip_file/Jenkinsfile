@@ -98,7 +98,7 @@ pipeline {
 //     localhost:8081/crumblIssuer/api/xml
 
 
-curl -X POST -H "Jenkins-Crumb:abf1dc75656cc73c7dd7213e29f2bed35cf54e01e59f2d186c27af11b439c645" --user  admin:11f40657da276b3ea3df6dcb94deb6814b  localhost:8081/job/enriquegutierrt-zip-file/buildWithParameters?token=11f40657da276b3ea3df6dcb94deb6814b&PARAMETERS_IN_BASE64=Yes&ORIGIN_FILE=cHJ1ZWJhY2FkZW5hYmFzZTY0&DESTINATION_FILE=cHJ1ZWJhZGVzdGlhbnRpb25iYXNlNjQ=&CPU_CORES=NA==&COMPRESS_TYPE=VWx0cmE=
+//curl -X POST -H "Jenkins-Crumb:abf1dc75656cc73c7dd7213e29f2bed35cf54e01e59f2d186c27af11b439c645" --user  admin:11f40657da276b3ea3df6dcb94deb6814b  localhost:8081/job/enriquegutierrt-zip-file/buildWithParameters?token=11f40657da276b3ea3df6dcb94deb6814b&PARAMETERS_IN_BASE64=Yes&ORIGIN_FILE=cHJ1ZWJhY2FkZW5hYmFzZTY0&DESTINATION_FILE=cHJ1ZWJhZGVzdGlhbnRpb25iYXNlNjQ=&CPU_CORES=NA==&COMPRESS_TYPE=VWx0cmE=
 
 
 
