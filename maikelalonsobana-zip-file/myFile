@@ -1,8 +1,3 @@
-def decodedOriginFile = ""
-def decodedDestinationFile = ""
-def decodedCpuCores = ""
-def decodedCompressType = ""
-
 pipeline {
     agent { 
         label 'minion2'
@@ -31,42 +26,11 @@ pipeline {
                 println "PARAMETERS_IN_BASE4: " + "$PARAMETERS_IN_BASE4"
                 println "SOURCE_PATH: " + "$SOURCE_PATH"
                 println "TARGET_PATH: " + "$TARGET_PATH"
-                println "NUMBER_OF CORES: " + "$NUMBER_OF_CORES"
-                println "COMPRESSION_LEVEL: " + "$COMPRESSION_LEVEL"
+                println "NUMBER_OF CORES" + "$NUMBER_OF_CORES"
+                println "COMPRESSION_LEVEL" + "$COMPRESSION_LEVEL"
                 /* 7za a -r -mmt2 /home/jenkins/projects/development-pipeline/maikelalonsobana-zip-file/Jenkinsfile.7z /home/jenkins/projects/development-pipeline/maikelalonsobana-zip-file/Jenkinsfile -mx9 */
             }            
         }
-
-        stage ('Decode From Base64') {
-            steps {
-                script {
-                    if ("$PARAMETERS_IN_BASE64" == "Yes") {
-                        decodedOriginFile = new String(Base64.getDecoder().decode("$SOURCE_PATH"), "UTF-8");
-                        decodedDestinationFile = new String(Base64.getDecoder().decode("$TARGET_PATH"), "UTF-8");
-                        decodedCpuCores = new String(Base64.getDecoder().decode("$NUMBER_OF_CORES"), "UTF-8");
-                        decodedCompressType = new String(Base64.getDecoder().decode("$COMPRESSION_LEVEL"), "UTF-8");
-
-                    } else {
-                        decodedOriginFile = "$SOURCE_PATH";
-                        decodedDestinationFile = "$TARGET_PATH";
-                        decodedCpuCores = "$NUMBER_OF_CORES";
-                        decodedCompressType = "$COMPRESSION_LEVEL";
-                    }
-                }
-            }
-        }
-
-        stage ('DEBUG => Base64 Decoded') {
-            steps {
-                println "PARAMETERS_IN_BASE4: " + "$PARAMETERS_IN_BASE4"
-                println "SOURCE_PATH: " + decodedOriginFile
-                println "TARGET_PATH: " + decodedDestinationFile
-                println "NUMBER_OF CORES: " + decodedCpuCores
-                println "COMPRESSION_LEVEL: " + decodedCompressType                
-            }            
-        }
-
-
     }
 
     // 
