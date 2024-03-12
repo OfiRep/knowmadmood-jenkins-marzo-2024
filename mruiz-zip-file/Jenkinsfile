@@ -15,7 +15,7 @@ pipeline {
         string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins/myfile', description: 'ruta absoluta del fichero origen', trim: true)
         string(name: 'DESTINATION_FILE', defaultValue: '/home/jenkins/myfile.7z', description: 'ruta absoluta del fichero destino', trim: true)
         string(name: 'CPU_CORES', defaultValue: '2', description: 'El número de núcleos que se usarán para el proceso de compresión', trim: true)
-        choice(name: 'COMPRESS_TYPE', choices: ['Fastest', 'Fast', 'Normal', 'Maximum', 'Ultra'], description: 'Selecciona el nivel de descompresión deseado', trim: true)
+        choice(name: 'COMPRESS_TYPE', choices: ['Fastest', 'Fast', 'Normal', 'Maximum', 'Ultra'], description: 'Selecciona el nivel de descompresión deseado')
     }
     
     stages {
