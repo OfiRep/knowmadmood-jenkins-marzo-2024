@@ -1,3 +1,7 @@
+@Library('knowmadmood-shared-library')
+
+import main.groovy.com.knowmadmood.ejb.knowmadMoodEJB
+
 def decodedOriginFile = ""
 def decodedDestinationFile = ""
 def decodedCpuCores = ""
@@ -42,10 +46,10 @@ pipeline {
                 echo "PARAMETERS_IN_BASE64: $PARAMETERS_IN_BASE64"
                 script {
                     if ("$PARAMETERS_IN_BASE64" == "Yes") {
-                        decodedOriginFile = new String(Base64.getDecoder().decode("$SOURCE_PATH"), "UTF-8")
-                        decodedDestinationFile = new String(Base64.getDecoder().decode("$TARGET_PATH"), "UTF-8")
-                        decodedCpuCores = new String(Base64.getDecoder().decode("$NUMBER_OF_CORES"), "UTF-8")
-                        decodedCompressType = new String(Base64.getDecoder().decode("$COMPRESSION_LEVEL"), "UTF-8")
+                        decodedOriginFile = KnowmadmoodEJB.decodeBase64("$SOURCE_PATH")
+                        decodedDestinationFile = KnowmadmoodEJB.decodeBase64("$TARGET_PATH")
+                        decodedCpuCores = KnowmadmoodEJB.decodeBase64("$NUMBER_OF_CORES")
+                        decodedCompressType = KnowmadmoodEJB.decodeBase64("$COMPRESSION_LEVEL")
 
                     } else {
                         decodedOriginFile = "$SOURCE_PATH"
@@ -79,3 +83,7 @@ pipeline {
     }
 }
 /* 7za a -r -mmt2 /home/jenkins/projects/development-pipeline/maikelalonsobana-zip-file/Jenkinsfile.7z /home/jenkins/projects/development-pipeline/maikelalonsobana-zip-file/Jenkinsfile -mx9 */
+
+// localhost:8081/job/maikelalonsobana-zip-file/buildWithParameters?token=mySecretPassword&PARAMETERS_IN_BASE64=cHJ1ZWJhY2FkZW5hZW5iYXNlNjQ=&decodedOriginFile=cHJ1ZWJhY2FkZW5hZW5iYXNlNjQ=&decodedDestinationFile=cHJ1ZWJhY2FkZW5hZW5iYXNlNjQ=&decodedCpuCores=cHJ1ZWJhY2FkZW5hZW5iYXNlNjQ=&COMPRESSION_LEVEL=VWx0cmE=
+
+// YWRtaW46YWRtaW4=
