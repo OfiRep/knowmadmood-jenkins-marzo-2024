@@ -3,6 +3,16 @@ def decodeDestinationFile = ""
 def decodeCpuCores = ""
 def decodeCompressType = ""
 
+def base64Decode(encodedString){
+    if ("$PARAMETERS_IN_BASE64" == "Yes"){
+        byte[] decoded = encodedString.decodeBase64()
+        return new String(decoded)
+    }else{
+        return encodedString
+    }
+}
+
+
 pipeline {
     agent { 
         label 'minion2'
@@ -41,15 +51,7 @@ pipeline {
         stage('Decode from Base64'){
             steps {
                 script {
-                    def base64Decode(encodedString){
-                        if ("$PARAMETERS_IN_BASE64" == "Yes"){
-                            byte[] decoded = encodedString.decodeBase64()
-                            return new String(decoded)
-                        }else{
-                            return encodedString
-                        }
-                    }
-
+                    
                     decodeOriginFile = base64Decode("$ORIGIN_FILE")
                     decodeDestinationFile = base64Decode("$DESTINATION_FILE")
                     decodeCpuCores = base64Decode("$CPU_CORES")
