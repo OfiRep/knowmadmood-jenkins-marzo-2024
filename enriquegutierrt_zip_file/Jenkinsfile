@@ -1,7 +1,6 @@
 @Library('knowmadmood-shared-library')
 
-
-import main.groovy.com.knowmadmood.ejb.knowMadMoodEJB
+import main.groovy.com.knowmadmood.ejb.KnowMadMoodEJB
 
 def decodedOriginFile = ""
 def decodedDestinationFile = ""
@@ -20,10 +19,10 @@ pipeline {
     }
 
     parameters {
-        choice(name: 'TYPE_BASE64', choices: ['No','Yes'], description: 'Tipo de codificacion')
-        string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins/myfile', description: 'El nombre del archivo de origen a comprimir.', trim:true)
-        string(name: 'DESTINATION_FILE', defaultValue: '/home/jenkins/myfile.7z', description: 'El nombre del archivo comprimido que quieres tener.', trim:true)
-        string(name: 'CPU_CORES', defaultValue: '2', description: 'El número de núcleos de CPU que se usarán para el proceso de compresión.', trim:true)
+        choice(name: 'PARAMETERS_IN_BASE64', choices: ['No', 'Yes'], description: 'Indicación si los parámetros vienen en Base64')
+        string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins/myfile', description: 'El nombre del archivo de origen a comprimir.', trim: true)
+        string(name: 'DESTINATION_FILE', defaultValue: '/home/jenkins/myfile.7z', description: 'El nombre del archivo comprimido que quieres tener.', trim: true)
+        string(name: 'CPU_CORES', defaultValue: '2', description: 'El número de núcleos de CPU que se usarán para el proceso de compresión.', trim: true)
         choice(name: 'COMPRESS_TYPE', choices: ['Fastest', 'Fast', 'Normal', 'Maximum', 'Ultra'], description: 'Selecciona el nivel de compresión deseado.')
     }
 
@@ -34,26 +33,25 @@ pipeline {
             }
         }
 
-        stage ('DEBUG -> Base64 encode') {
+        stage ('DEBUG -> Base64 Encoded') {
             steps {
-                println "PARAMETERS_IN_BASE64"+"$TYPE_BASE64"
-                println "ORIGIN_FILE"+"$ORIGIN_FILE"
-                println "DESTINATION_FILE"+"$DESTINATION_FILE"
-                println "CPU_CORES"+"$CPU_CORES"
-                println "COMPRESS_TYPE"+"$COMPRESS_TYPE"
+                println "PARAMETERS_IN_BASE64" + "$PARAMETERS_IN_BASE64"
+                println "ORIGIN_FILE: " + "$ORIGIN_FILE"
+                println "DESTINATION_FILE: " + "$DESTINATION_FILE"
+                println "CPU_CORES: " + "$CPU_CORES"
+                println "COMPRESS_TYPE: " + "$COMPRESS_TYPE"
             }
         }
 
         stage ('Decode From Base64') {
             steps {
                 script {
-                    if ("$TYPE_BASE64" == "Yes") {
-                        decodedOriginFile = knowMadMoodEJB.decodeBase64('$ORIGIN_FILE')
-                        decodedDestinationFile = knowMadMoodEJB.decodeBase64('$DESTINATION_FILE')
-                        decodedCpuCores = knowMadMoodEJB.decodeBase64('$CPU_CORES')
-                        decodedCompressType = knowMadMoodEJB.decodeBase64('$COMPRESS_TYPE')
-                    }
-                    else {
+                    if ("$PARAMETERS_IN_BASE64" == "Yes") {
+                        decodedOriginFile = KnowMadMoodEJB.decodeBase64("$ORIGIN_FILE")
+                        decodedDestinationFile = KnowMadMoodEJB.decodeBase64("$DESTINATION_FILE")
+                        decodedCpuCores = KnowMadMoodEJB.decodeBase64("$CPU_CORES")
+                        decodedCompressType = KnowMadMoodEJB.decodeBase64("$COMPRESS_TYPE")
+                    } else {
                         decodedOriginFile = "$ORIGIN_FILE"
                         decodedDestinationFile = "$DESTINATION_FILE"
                         decodedCpuCores = "$CPU_CORES"
@@ -62,16 +60,17 @@ pipeline {
                 }
             }
         }
-        stage ('DEBUG -> Base64 decode') {
+
+        stage ('DEBUG -> Base64 Decoded') {
             steps {
-                println "PARAMETERS_IN_BASE64"+"$TYPE_BASE64"
-                println "ORIGIN_FILE"+ decodedOriginFile
-                println "DESTINATION_FILE"+ decodedDestinationFile
-                println "CPU_CORES"+ decodedCpuCores
-                println "COMPRESS_TYPE"+ decodedCompressType
+                println "PARAMETERS_IN_BASE64" + "$PARAMETERS_IN_BASE64"
+                println "ORIGIN_FILE: " + decodedOriginFile
+                println "DESTINATION_FILE: " + decodedDestinationFile
+                println "CPU_CORES: " + decodedCpuCores
+                println "COMPRESS_TYPE: " + decodedCompressType
             }
         }
-        
+
     }
 
     post {
