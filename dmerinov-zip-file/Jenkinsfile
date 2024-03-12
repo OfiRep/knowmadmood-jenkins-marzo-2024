@@ -8,6 +8,9 @@ pipeline {
     }
 
     parameters{
+        choice(name: 'PARAMETERS_IN_BASE64', choices: ['Yes','No'],
+        description: 'tipo de compresion'))
+        
         string(name: 'ORIGIN_FILE', defaultValue: '/Users/dmerinov/Desktop/colaborativoJenkins/knowmadmood-jenkins-marzo-2024/david_merino_vecino/Jenkinsfile',
         description: 'ruta de origen del fichero')
 
@@ -29,6 +32,7 @@ pipeline {
 
         stage('DEBUG -> Base64 Encoded') {
             steps {
+                println "PARAMETERS_IN_BASE64: $PARAMETERS_IN_BASE64"
                 println "ORIGIN_FILE: $ORIGIN_FILE"
                 println "DESTINATION_FILE: $DESTINATION_FILE"
                 println "CPU_CORES: $CPU_CORES"
