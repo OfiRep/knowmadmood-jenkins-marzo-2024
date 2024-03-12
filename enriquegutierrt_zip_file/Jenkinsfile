@@ -15,7 +15,7 @@ pipeline {
     }
 
     parameters {
-        choice(name: 'TYPE_BASE64', choices: ['Yes','No'], description: 'Tipo de codificacion')
+        choice(name: 'TYPE_BASE64', choices: ['No','Yes'], description: 'Tipo de codificacion')
         string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins/myfile', description: 'El nombre del archivo de origen a comprimir.', trim:true)
         string(name: 'DESTINATION_FILE', defaultValue: '/home/jenkins/myfile.7z', description: 'El nombre del archivo comprimido que quieres tener.', trim:true)
         string(name: 'CPU_CORES', defaultValue: '2', description: 'El número de núcleos de CPU que se usarán para el proceso de compresión.', trim:true)
@@ -76,3 +76,24 @@ pipeline {
     }
 }
 //7za a -r -mmt2 /home/jenkins/projects/development-pipeline/enriquegutierrt_zip_file/Jenkinsfile.7z /home/jenkins/projects/development-pipeline/enriquegutierrt_zip_file/Jenkinsfile -mx9
+
+//localhost:8081/job/enriquegutierrt-zip-file/buildWithParameters?token=mySecretPassword&PARAMETERS_IN_BASE64=Yes&ORIGIN_FILE=cHJ1ZWJhY2FkZW5hYmFzZTY0&DESTINATION_FILE=cHJ1ZWJhZGVzdGlhbnRpb25iYXNlNjQ=&CPU_CORES=NA==&COMPRESS_TYPE=VWx0cmE=
+
+//TOEKN : 11f40657da276b3ea3df6dcb94deb6814b
+
+//eaegutierrez@knowmadmood.com:11f40657da276b3ea3df6dcb94deb6814b
+//Authorization Basic in Base64: ZWFlZ3V0aWVycmV6QGtub3dtYWRtb29kLmNvbToxMWY0MDY1N2RhMjc2YjNlYTNkZjZkY2I5NGRlYjY4MTRi
+/*Con el email de usuario*/
+//curl -X POST -H "Authorization: Basic ZWFlZ3V0aWVycmV6QGtub3dtYWRtb29kLmNvbToxMWY0MDY1N2RhMjc2YjNlYTNkZjZkY2I5NGRlYjY4MTRi" localhost:8081/job/enriquegutierrt-zip-file/buildWithParameters?token=mySecretPassword
+
+/*COn el nombre de usuario */
+//curl --user admin:admin localhost:8081/job/enriquegutierrt-zip-file/buildWithParameters?token=mySecretPassword
+
+//curl --user admin:ZWFlZ3V0aWVycmV6QGtub3dtYWRtb29kLmNvbToxMWY0MDY1N2RhMjc2YjNlYTNkZjZkY2I5NGRlYjY4MTRi \
+//     localhost:8081/crumblIssuer/api/xml
+
+
+curl -X POST -H "Jenkins-Crumb:abf1dc75656cc73c7dd7213e29f2bed35cf54e01e59f2d186c27af11b439c645" --user  admin:11f40657da276b3ea3df6dcb94deb6814b  localhost:8081/job/enriquegutierrt-zip-file/buildWithParameters?token=11f40657da276b3ea3df6dcb94deb6814b&PARAMETERS_IN_BASE64=Yes&ORIGIN_FILE=cHJ1ZWJhY2FkZW5hYmFzZTY0&DESTINATION_FILE=cHJ1ZWJhZGVzdGlhbnRpb25iYXNlNjQ=&CPU_CORES=NA==&COMPRESS_TYPE=VWx0cmE=
+
+
+
