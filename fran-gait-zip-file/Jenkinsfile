@@ -1,3 +1,8 @@
+def decodeOriginFile = ""
+def decodeDestinationFile = ""
+def decodeCpuCores = ""
+def decodeCompressType = ""
+
 pipeline {
     agent { 
         label 'minion2'
@@ -9,9 +14,10 @@ pipeline {
     }
     
     parameters {
-        string (name: 'ORIGIN_FILE', defaultValue: '/home/jenkins/myfile', description: 'El nombre del archivo de origen.')
-        string (name: 'DESTINATION_FILE', defaultValue: '/home/jenkins/myfile.7z', description: 'El nombre del archivo comprimido.')
-        string (name: 'CPU_CORES', defaultValue: '2', description: 'El número de nucleos de CPU que se usaran para el proceso de compresión.')
+        choice (name: 'PARAMETERS_IN_BASE64', choices: ['No', 'Yes'], description: 'Indicación si los parámetros vienen en Base64')
+        string (name: 'ORIGIN_FILE', defaultValue: '/home/jenkins/myfile', description: 'El nombre del archivo de origen.', trim: true)
+        string (name: 'DESTINATION_FILE', defaultValue: '/home/jenkins/myfile.7z', description: 'El nombre del archivo comprimido.', trim: true)
+        string (name: 'CPU_CORES', defaultValue: '2', description: 'El número de nucleos de CPU que se usaran para el proceso de compresión.', trim: true)
         choice (name: 'COMPRESS_TYPE', choices: ['Fastest', 'Fast', 'Normal', 'Maximum', 'Ultra'], description: 'Selecciona el nivel de compresión deseado.')
     }
 
@@ -24,10 +30,40 @@ pipeline {
 
         stage('DEBUG -> Base64 Encoded'){
             steps {
+                println "PARAMETERS_IN_BASE64: " + "$PARAMETERS_IN_BASE64"
                 println "ORIGIN_FILE: " + "$ORIGIN_FILE"
                 println "DESTINATION_FILE: " + "$DESTINATION_FILE"
                 println "CPU_CORES: " + "$CPU_CORES"
                 println "COMPRESS_TYPE: " + "$COMPRESS_TYPE"
+            }
+        }
+
+        stage('Decode from Base64'){
+            steps {
+                script {
+                    def base64Decode(encodedString){
+                        if ("$PARAMETERS_IN_BASE64" == "Yes"){
+                            byte[] decoded = encodedString.decodeBase64()
+                            return new String(decoded)
+                        }else{
+                            return encodedString
+                        }
+                    }
+
+                    decodeOriginFile = base64Decode("$ORIGIN_FILE")
+                    decodeDestinationFile = base64Decode("$DESTINATION_FILE")
+                    decodeCpuCores = base64Decode("$CPU_CORES")
+                    decodeCompressType = base64Decode("$COMPRESS_TYPE")
+                }
+            }
+        }
+
+        stage('DEBUG -> Base64 Decoded'){
+            steps {
+                println "ORIGIN_FILE: " + decodeOriginFile
+                println "DESTINATION_FILE: " + decodeDestinationFile
+                println "CPU_CORES: " + decodeCpuCores
+                println "COMPRESS_TYPE: " + decodeCompressType
             }
         }
     }
