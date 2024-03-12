@@ -1,3 +1,7 @@
+@Library('knowmadmood-shared-library')
+
+import main.groovy.com.knowmadmood.ejb.KnowMadMoodEJB
+
 def decodedOriginFile = ""
 def decodedDestinationFile = ""
 def decodedCpuCores = ""
@@ -49,10 +53,10 @@ pipeline {
             steps{
                 script{
                     if ("$PARAMETERS_IN_BASE64" == "Yes"){
-                        decodedOriginFile = new String(Base64.getDecoder().decode("$ORIGIN_FILE", "UTF-8"))
-                        decodedDestinationFile = new String(Base64.getDecoder().decode("$DESTINATION_FILE", "UTF-8"))
-                        decodedCpuCores = new String(Base64.getDecoder().decode("$CPU_CORES", "UTF-8"))
-                        decodedCompressType = new String(Base64.getDecoder().decode("$COMPRESS_TYPE", "UTF-8"))
+                        decodedOriginFile = KnowMadMoodEJB.decodeBase64("$ORIGIN_FILE")//new String(Base64.getDecoder().decode("$ORIGIN_FILE", "UTF-8"))
+                        decodedDestinationFile = KnowMadMoodEJB.decodeBase64("$DESTINATION_FILE")//new String(Base64.getDecoder().decode("$DESTINATION_FILE", "UTF-8"))
+                        decodedCpuCores = new KnowMadMoodEJB.decodeBase64("$CPU_CORES") //String(Base64.getDecoder().decode("$CPU_CORES", "UTF-8"))
+                        decodedCompressType = KnowMadMoodEJB.decodeBase64("$COMPRESS_TYPE") //new String(Base64.getDecoder().decode("$COMPRESS_TYPE", "UTF-8")
                     } else {
                         decodedOriginFile = "$ORIGIN_FILE"
                         decodedDestinationFile = "$DESTINATION_FILE"
@@ -77,4 +81,18 @@ pipeline {
 
 /*
 7z a -r -mmt2 /Users/dmerinov/Desktop/colaborativoJenkins/knowmadmood-jenkins-marzo-2024/dmerinov-zip-file/Jenkinsfile.7z /Users/dmerinov/Desktop/colaborativoJenkins/knowmadmood-jenkins-marzo-2024/david_merino_vecino/Jenkinsfile -mx9
+*/
+
+//ejecución remota del jenkins
+//localhost:8081/job/dmerinov-zip-file/buildWithParameters?token=mySecretPassword&PARAMETERS_IN_BASE64=Yes&ORIGIN_FILE=cHJ1ZWJh&DESTINATION_FILE=cHJ1ZWJh&CPU_CORES=cHJ1ZWJh&COMPRESS_TYPE=RmFzdGVzdA==
+//Http
+//external sys invo: 1196eb7e31518fa88ebb8bc7a4f7e3a1f9
+/*
+HTTP ->
+Authorization Basic admin:1196eb7e31518fa88ebb8bc7a4f7e3a1f9
+Authorization Basic YWRtaW46MTE5NmViN2UzMTUxOGZhODhlYmI4YmM3YTRmN2UzYTFmOQ==
+
+curl -H "Authorization: Basic YWRtaW46MTE5NmViN2UzMTUxOGZhODhlYmI4YmM3YTRmN2UzYTFmOQ==" -X POST localhost:8081/job/dmerinov-zip-file/buildWithParameters?token=mySecretPassword
+
+curl --user admin:admin localhost:8081/crumbIssuer/api
 */
