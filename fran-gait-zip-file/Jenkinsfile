@@ -61,7 +61,7 @@ pipeline {
                     decodeOriginFile = base64Decode("$ORIGIN_FILE")
                     decodeDestinationFile = base64Decode("$DESTINATION_FILE")
                     decodeCpuCores = base64Decode("$CPU_CORES")
-                    decodeCompressType = $COMPRESS_TYPE
+                    decodeCompressType = "$COMPRESS_TYPE"
                 }
             }
         }
