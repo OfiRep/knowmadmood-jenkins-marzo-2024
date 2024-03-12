@@ -3,12 +3,18 @@ def decodeDestinationFile = ""
 def decodeCpuCores = ""
 def decodeCompressType = ""
 
-def base64Decode(encodedString){
+def base64Decode(inputString){
+     if (inputString == null || inputString.trim() == '') {
+        println("El parámetro es nulo o está vacío.")
+        return null
+    }
+    
+    def trimmedString = inputString.trim()
     if ("$PARAMETERS_IN_BASE64" == "Yes"){
-        byte[] decoded = encodedString.decodeBase64()
+        byte[] decoded = trimmedString.decodeBase64()
         return new String(decoded)
     }else{
-        return encodedString
+        return trimmedString
     }
 }
 
@@ -55,13 +61,14 @@ pipeline {
                     decodeOriginFile = base64Decode("$ORIGIN_FILE")
                     decodeDestinationFile = base64Decode("$DESTINATION_FILE")
                     decodeCpuCores = base64Decode("$CPU_CORES")
-                    decodeCompressType = base64Decode("$COMPRESS_TYPE")
+                    decodeCompressType = $COMPRESS_TYPE
                 }
             }
         }
 
         stage('DEBUG -> Base64 Decoded'){
             steps {
+                println "PARAMETERS_IN_BASE64: " + "$PARAMETERS_IN_BASE64"
                 println "ORIGIN_FILE: " + decodeOriginFile
                 println "DESTINATION_FILE: " + decodeDestinationFile
                 println "CPU_CORES: " + decodeCpuCores
