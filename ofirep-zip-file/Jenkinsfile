@@ -1,3 +1,7 @@
+@Library('knowmadmood-shared-library')
+
+import main.groovy.com.knowmadmood.ejb.KnowMadMoodEJB
+
 def decodedOriginFile = ""
 def decodedDestinationFile = ""
 def decodedCpuCores = ""
@@ -43,10 +47,10 @@ pipeline {
             steps {
                 script {
                     if ("$PARAMETERS_IN_BASE64" == "Yes") {
-                        decodedOriginFile = new String(Base64.getDecoder().decode("$ORIGIN_FILE"), "UTF-8")
-                        decodedDestinationFile = new String(Base64.getDecoder().decode("$DESTINATION_FILE"), "UTF-8")
-                        decodedCpuCores = new String(Base64.getDecoder().decode("$CPU_CORES"), "UTF-8")
-                        decodedCompressType = new String(Base64.getDecoder().decode("$COMPRESS_TYPE"), "UTF-8")
+                        decodedOriginFile = KnowMadMoodEJB.decodeBase64("$ORIGIN_FILE")
+                        decodedDestinationFile = KnowMadMoodEJB.decodeBase64("$DESTINATION_FILE")
+                        decodedCpuCores = KnowMadMoodEJB.decodeBase64("$CPU_CORES")
+                        decodedCompressType = KnowMadMoodEJB.decodeBase64("$COMPRESS_TYPE")
                     } else {
                         decodedOriginFile = "$ORIGIN_FILE"
                         decodedDestinationFile = "$DESTINATION_FILE"
@@ -79,4 +83,31 @@ pipeline {
 
 /*7za a -r -mmt2 /home/jenkins/projects/development-pipeline/ofirep-zip-file/Jenkinsfile.7z /home/jenkins/projects/development-pipeline/ofirep-zip-file/Jenkinsfile -mx9*/
 
+//localhost:8081/job/ofirep-zip-file/buildWithParameters?token=mySecretPassword&PARAMETERS_IN_BASE64=Yes&ORIGIN_FILE=cHJ1ZWJhY2FkZW5hZW5iYXNlNjQ=&DESTINATION_FILE=cHJ1ZWJhY2FkZW5hZW5iYXNlNjQ=&CPU_CORES=cHJ1ZWJhY2FkZW5hZW5iYXNlNjQ=&COMPRESS_TYPE=VWx0cmE=
 
+//HTTP ->
+///Header
+//    Authorization Basic email:token
+
+//Token: 11e515f0895743b30fc2e824d8a77b1256
+
+//Authorization Basic m.tomas.ortega@gmail.com:11e515f0895743b30fc2e824d8a77b1256
+
+//Authorization Basic  bS50b21hcy5vcnRlZ2FAZ21haWwuY29tOjExZTUxNWYwODk1NzQzYjMwZmMyZTgyNGQ4YTc3YjEyNTY=
+
+/*Con el email de usuario*/
+//curl -X POST -H "Authorization: Basic  bS50b21hcy5vcnRlZ2FAZ21haWwuY29tOjExZTUxNWYwODk1NzQzYjMwZmMyZTgyNGQ4YTc3YjEyNTY=" localhost:8081/job/ofirep-zip-file/buildWithParameters?token=mySecretPassword
+
+/*Con el nombre del usuario en sí*/
+//curl --user admin:admin localhost:8081/job/ofirep-zip-file/buildWithParameters?token=mySecretPassword
+
+
+//1º) Obtengo un jenkins crumb (usuario:clave o token)
+//curl --user admin:11e515f0895743b30fc2e824d8a77b1256 \
+//    localhost:8081/crumbIssuer/api/xml?xpath=concat\(//crumbRequestField,%22:%22,//crumb\))
+
+//2º) Obtengo esta cabecera http y ese key:value
+//Jenkins-Crumb:5194d5cb1fb026d633421271376ab067b48f2070f2ab977635b6499e241be6f9    
+
+//3º) Invocamos al jenkins por POST, estando autentificados por el usuario --user (usuario:token)
+//curl -X POST -H "Jenkins-Crumb:5194d5cb1fb026d633421271376ab067b48f2070f2ab977635b6499e241be6f9 " --user admin:11e515f0895743b30fc2e824d8a77b1256 localhost:8081/job/ofirep-zip-file/buildWithParameters?token=mySecretPassword&PARAMETERS_IN_BASE64=Yes&ORIGIN_FILE=cHJ1ZWJhY2FkZW5hZW5iYXNlNjQ=&DESTINATION_FILE=cHJ1ZWJhY2FkZW5hZW5iYXNlNjQ=&CPU_CORES=cHJ1ZWJhY2FkZW5hZW5iYXNlNjQ=&COMPRESS_TYPE=VWx0cmE=
