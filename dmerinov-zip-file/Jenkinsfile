@@ -62,6 +62,16 @@ pipeline {
                 }
             }
         }
+
+        stage('DEBUG -> Base64 Decoded') {
+            steps {
+                println "PARAMETERS_IN_BASE64: $PARAMETERS_IN_BASE64"
+                println "ORIGIN_FILE: " + decodedOriginFile
+                println "DESTINATION_FILE: " + decodedDestinationFile
+                println "CPU_CORES: "+ $CPU_CORES
+                println "COMPRESS_TYPE: "+ $COMPRESS_TYPE
+                }
+        }
     }
 }
 
