@@ -28,7 +28,7 @@ pipeline {
         }
         stage ('DEBUG => Base64 Encoded') {
             steps {
-                println "PARAMETERS_IN_BASE4: " + "$PARAMETERS_IN_BASE4"
+                println "PARAMETERS_IN_BASE64: " + "$PARAMETERS_IN_BASE64"
                 println "SOURCE_PATH: " + "$SOURCE_PATH"
                 println "TARGET_PATH: " + "$TARGET_PATH"
                 println "NUMBER_OF CORES: " + "$NUMBER_OF_CORES"
@@ -44,13 +44,13 @@ pipeline {
                         decodedOriginFile = new String(Base64.getDecoder().decode("$SOURCE_PATH"), "UTF-8");
                         decodedDestinationFile = new String(Base64.getDecoder().decode("$TARGET_PATH"), "UTF-8");
                         decodedCpuCores = new String(Base64.getDecoder().decode("$NUMBER_OF_CORES"), "UTF-8");
-                        decodedCompressType = new String(Base64.getDecoder().decode("$COMPRESSION_LEVEL"), "UTF-8");
+                        // decodedCompressType = new String(Base64.getDecoder().decode("$COMPRESSION_LEVEL"), "UTF-8");
 
                     } else {
                         decodedOriginFile = "$SOURCE_PATH";
                         decodedDestinationFile = "$TARGET_PATH";
                         decodedCpuCores = "$NUMBER_OF_CORES";
-                        decodedCompressType = "$COMPRESSION_LEVEL";
+                        // decodedCompressType = "$COMPRESSION_LEVEL";
                     }
                 }
             }
@@ -58,11 +58,11 @@ pipeline {
 
         stage ('DEBUG => Base64 Decoded') {
             steps {
-                println "PARAMETERS_IN_BASE4: " + "$PARAMETERS_IN_BASE4"
+                println "PARAMETERS_IN_BASE64: " + "$PARAMETERS_IN_BASE64"
                 println "SOURCE_PATH: " + decodedOriginFile
                 println "TARGET_PATH: " + decodedDestinationFile
                 println "NUMBER_OF CORES: " + decodedCpuCores
-                println "COMPRESSION_LEVEL: " + decodedCompressType                
+                println "COMPRESSION_LEVEL: " + "$COMPRESSION_LEVEL"                
             }            
         }
 
