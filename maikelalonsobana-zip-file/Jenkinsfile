@@ -31,7 +31,6 @@ pipeline {
                 /* 7za a -r -mmt2 /home/jenkins/projects/development-pipeline/maikelalonsobana-zip-file/Jenkinsfile.7z /home/jenkins/projects/development-pipeline/maikelalonsobana-zip-file/Jenkinsfile -mx9 */
             }            
         }
-        stage
     }
 
     // 
