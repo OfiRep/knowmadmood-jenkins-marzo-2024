@@ -1,0 +1,80 @@
+def decodedOriginFile = ""
+def decodedDestinationFile = ""
+def decodedCpuCores = ""
+def decodedCompressType = ""
+
+pipeline {
+    agent {
+        label 'minion2'
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '7',
+                                  daysToKeepStr: '10'))
+        timestamps()
+    }
+
+    parameters {
+        choice(name: 'PARAMETERS_IN_BASE64', choices: ['No', 'Yes'], description: 'Indicación si los parámetros vienen en Base64')
+        string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins/myfile', description: 'El nombre del archivo de origen a comprimir.', trim: true)
+        string(name: 'DESTINATION_FILE', defaultValue: '/home/jenkins/myfile.7z', description: 'El nombre del archivo comprimido que quieres tener.', trim: true)
+        string(name: 'CPU_CORES', defaultValue: '2', description: 'El número de núcleos de CPU que se usarán para el proceso de compresión.', trim: true)
+        choice(name: 'COMPRESS_TYPE', choices: ['Fastest', 'Fast', 'Normal', 'Maximum', 'Ultra'], description: 'Selecciona el nivel de compresión deseado.')
+    }
+
+    stages {
+        stage ('Clean WorkSpace') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage ('DEBUG: Base64 Encoded') {
+            steps {
+                println "PARAMETERS_IN_BASE64" + "$PARAMETERS_IN_BASE64"
+                println "ORIGIN_FILE: " + "$ORIGIN_FILE"
+                println "DESTINATION_FILE: " + "$DESTINATION_FILE"
+                println "CPU_CORES: " + "$CPU_CORES"
+                println "COMPRESS_TYPE: " + "$COMPRESS_TYPE"
+            }
+        }
+
+        stage ('Decode From Base64') {
+            steps {
+                script {
+                    if ("$PARAMETERS_IN_BASE64" == "Yes") {
+                        decodedOriginFile = new String(Base64.getDecoder().decode("$ORIGIN_FILE"), "UTF-8")
+                        decodedDestinationFile = new String(Base64.getDecoder().decode("$DESTINATION_FILE"), "UTF-8")
+                        decodedCpuCores = new String(Base64.getDecoder().decode("$CPU_CORES"), "UTF-8")
+                        decodedCompressType = new String(Base64.getDecoder().decode("$COMPRESS_TYPE"), "UTF-8")
+                    } else {
+                        decodedOriginFile = "$ORIGIN_FILE"
+                        decodedDestinationFile = "$DESTINATION_FILE"
+                        decodedCpuCores = "$CPU_CORES"
+                        decodedCompressType = "$COMPRESS_TYPE"
+                    }
+                }
+            }
+        }
+
+        stage ('DEBUG: Base64 Decoded') {
+            steps {
+                println "PARAMETERS_IN_BASE64: " + "$PARAMETERS_IN_BASE64"
+                println "ORIGIN_FILE: " + decodedOriginFile
+                println "DESTINATION_FILE: " + decodedDestinationFile
+                println "CPU_CORES: " + decodedCpuCores
+                println "COMPRESS_TYPE: " + decodedCompressType
+            }
+        }
+
+    }
+
+    post {
+        always {
+            chuckNorris()
+        }
+    }
+}
+
+
+/*7za a -r -mmt2 /home/jenkins/projects/development-pipeline/gmqdev-zip-file/Jenkinsfile.7z /home/jenkins/projects/development-pipeline/gmqdev-zip-file/Jenkinsfile -mx9*/

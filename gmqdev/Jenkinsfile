@@ -5,16 +5,16 @@ pipeline {
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '7',
-                                  daystoKeepStr: '10'))
+                                  daysToKeepStr: '10'))
         timestamps()
     }
 
     parameters {
-        string(name: 'VERSION', defaultValue: 'SNAPSHOT', )
+        string(name: 'VERSION', defaultValue: 'SNAPSHOT', description: 'La versión de la aplicación que queremos desplegar')
     }
 
     stages {
-        stage ('Clean Workspace') {
+        stage ('Clean WorkSpace') {
             steps {
                 cleanWs()
             }
@@ -22,31 +22,36 @@ pipeline {
 
         stage ('Maven Verify') {
             steps {
+                //echo "mvn verify"
                 println "mvn verify"
             }
         }
 
         stage ('Maven Test') {
             steps {
+                //echo "mvn test"
                 println "mvn test"
             }
         }
 
         stage ('Maven Install') {
             steps {
+                //echo "mvn install"
                 println "mvn install"
             }
         }
 
-        stage ('Maven Test') {
+        stage ('Create file') {
             steps {
+                //touch file1.txt
                 sh 'touch file1.txt'
             }
         }
-        
-        stage ('Maven Test') {
+
+        stage('Create custom file') {
             steps {
-                sh 'touch file-"$VERSION".txt'
+                //touch file-"$VERSION".txt
+                sh 'touch file-$VERSION.txt'
             }
         }
     }
