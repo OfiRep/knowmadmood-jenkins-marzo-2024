@@ -1,6 +1,6 @@
 @Library('knowmadmood-shared-library')
 
-import main.groovy.com.knowmadmood.ejb.knowmadMoodEJB
+import main.groovy.com.knowmadmood.ejb.KnowmadMoodEJB
 
 def decodedOriginFile = ""
 def decodedDestinationFile = ""
