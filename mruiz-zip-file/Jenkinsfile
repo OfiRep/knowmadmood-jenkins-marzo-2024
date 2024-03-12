@@ -1,3 +1,8 @@
+def decodedOriginFile = ""
+def decodedDestinationFile = ""
+def decodedCpuCores = ""
+def decodedCompressType = ""
+
 pipeline {
     agent any
     
@@ -7,10 +12,10 @@ pipeline {
     }
     
     parameters {
-        string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins/myfile', description: 'ruta absoluta del fichero origen')
-        string(name: 'DESTINATION_FILE', defaultValue: '/home/jenkins/myfile.7z', description: 'ruta absoluta del fichero destino')
-        string(name: 'CPU_CORES', defaultValue: '2', description: 'El número de núcleos que se usarán para el proceso de compresión')
-        choice(name: 'COMPRESS_TYPE', choices: ['Fastest', 'Fast', 'Normal', 'Maximum', 'Ultra'], description: 'Selecciona el nivel de descompresión deseado')
+        string(name: 'ORIGIN_FILE', defaultValue: '/home/jenkins/myfile', description: 'ruta absoluta del fichero origen', trim: true)
+        string(name: 'DESTINATION_FILE', defaultValue: '/home/jenkins/myfile.7z', description: 'ruta absoluta del fichero destino', trim: true)
+        string(name: 'CPU_CORES', defaultValue: '2', description: 'El número de núcleos que se usarán para el proceso de compresión', trim: true)
+        choice(name: 'COMPRESS_TYPE', choices: ['Fastest', 'Fast', 'Normal', 'Maximum', 'Ultra'], description: 'Selecciona el nivel de descompresión deseado', trim: true)
     }
     
     stages {
@@ -25,6 +30,17 @@ pipeline {
             println "DESTINATION_FILE: " + "$DESTINATION_FILE"
             println "CPU_CORES: " + "$CPU_CORES"
             println "COMPRESS_TYPE: " + "$COMPRESS_TYPE"
+        }
+    }
+
+    stage ('Decode from Base64') {
+        steps {
+            script {
+                decodedOriginFile = new String(Base64.getDecoder().decode("$ORIGIN_FILE"), "UTF-8")
+                decodedDestinationFile = new String(Base64.getDecoder().decode("$DESTINATION_FILE"), "UTF-8")
+                decodedCpuCores = new String(Base64.getDecoder().decode("$CPU_CORES"), "UTF-8")
+                decodedCompressType = new String(Base64.getDecoder().decode("$COMPRESS_TYPE"), "UTF-8")
+            }
         }
     }
     
