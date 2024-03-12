@@ -1,3 +1,8 @@
+def decodedOriginFile = ""
+def decodedDestinationFile = ""
+def decodedCpuCores = ""
+def decodedCompressType = ""
+
 pipeline {
     agent any
 
@@ -9,16 +14,16 @@ pipeline {
 
     parameters{
         choice(name: 'PARAMETERS_IN_BASE64', choices: ['Yes','No'],
-        description: 'tipo de compresion'))
+        description: 'tipo de compresion')
         
         string(name: 'ORIGIN_FILE', defaultValue: '/Users/dmerinov/Desktop/colaborativoJenkins/knowmadmood-jenkins-marzo-2024/david_merino_vecino/Jenkinsfile',
-        description: 'ruta de origen del fichero')
+        description: 'ruta de origen del fichero',  trim: true)
 
         string(name: 'DESTINATION_FILE', defaultValue: '/Users/dmerinov/Desktop/colaborativoJenkins/knowmadmood-jenkins-marzo-2024/dmerinov-zip-file/Jenkinsfile.7z',
-        description: 'ruta de destino del fichero')
+        description: 'ruta de destino del fichero',  trim: true)
         
         string(name: 'CPU_CORES', defaultValue: '2',
-        description: 'num cores que se usan en la tarea')
+        description: 'num cores que se usan en la tarea', trim: true)
     
         choice(name: 'COMPRESS_TYPE', choices: ['Fastest','Fast','Normal','Maximum','Ultra'],
         description: 'tipo de compresion')}
@@ -38,6 +43,24 @@ pipeline {
                 println "CPU_CORES: $CPU_CORES"
                 println "COMPRESS_TYPE: $COMPRESS_TYPE"
                 }
+        }
+
+        stage('Deserialize From Base64') {
+            steps{
+                scrpit{
+                    if ("$PARAMETERS_IN_BASE64" == "Yes"){
+                        decodedOriginFile = new String(Base64.getDecoder().decode("$ORIGIN_FILE"), "UTF-8")
+                        decodedDestinationFile = new String(Base64.getDecoder().decode("$DESTINATION_FILE"), "UTF-8")
+                        decodedCpuCores = new String(Base64.getDecoder().decode("$CPU_CORES"), "UTF-8")
+                        decodedCompressType = new String(Base64.getDecoder().decode("$COMPRESS_TYPE"), "UTF-8")
+                    } else {
+                        decodedOriginFile = "$ORIGIN_FILE"
+                        decodedDestinationFile = "$DESTINATION_FILE"
+                        decodedCpuCores = "$CPU_CORES"
+                        decodedCompressType ="$COMPRESS_TYPE"
+                    }
+                }
+            }
         }
     }
 }
