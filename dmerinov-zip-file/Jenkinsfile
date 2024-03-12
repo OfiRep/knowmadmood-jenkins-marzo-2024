@@ -49,10 +49,10 @@ pipeline {
             steps{
                 script{
                     if ("$PARAMETERS_IN_BASE64" == "Yes"){
-                        decodedOriginFile = new String(Base64.getDecoder().decode("$ORIGIN_FILE"), "UTF-8")
-                        decodedDestinationFile = new String(Base64.getDecoder().decode("$DESTINATION_FILE"), "UTF-8")
-                        decodedCpuCores = new String(Base64.getDecoder().decode("$CPU_CORES"), "UTF-8")
-                        decodedCompressType = new String(Base64.getDecoder().decode("$COMPRESS_TYPE"), "UTF-8")
+                        decodedOriginFile = new String(Base64.getDecoder().decode("$ORIGIN_FILE", "UTF-8"))
+                        decodedDestinationFile = new String(Base64.getDecoder().decode("$DESTINATION_FILE", "UTF-8"))
+                        decodedCpuCores = new String(Base64.getDecoder().decode("$CPU_CORES", "UTF-8"))
+                        decodedCompressType = new String(Base64.getDecoder().decode("$COMPRESS_TYPE", "UTF-8"))
                     } else {
                         decodedOriginFile = "$ORIGIN_FILE"
                         decodedDestinationFile = "$DESTINATION_FILE"
