@@ -1,3 +1,8 @@
+@Library('knowmadmood-shared-library')
+
+
+import main.groovy.com.knowmadmood.ejb.knowMadMoodEJB
+
 def decodedOriginFile = ""
 def decodedDestinationFile = ""
 def decodedCpuCores = ""
@@ -43,10 +48,10 @@ pipeline {
             steps {
                 script {
                     if ("$TYPE_BASE64" == "Yes") {
-                        decodedOriginFile = new String(Base64.getDecoder().decode("$ORIGIN_FILE"),"UTF-8")
-                        decodedDestinationFile = new String(Base64.getDecoder().decode("$DESTINATION_FILE"),"UTF-8")
-                        decodedCpuCores = new String(Base64.getDecoder().decode("$CPU_CORES"), "UTF-8")
-                        decodedCompressType = new String(Base64.getDecoder().decode("$COMPRESS_TYPE"), "UTF-8")
+                        decodedOriginFile = knowMadMoodEJB.decodeBase64('$ORIGIN_FILE')
+                        decodedDestinationFile = knowMadMoodEJB.decodeBase64('$DESTINATION_FILE')
+                        decodedCpuCores = knowMadMoodEJB.decodeBase64('$CPU_CORES')
+                        decodedCompressType = knowMadMoodEJB.decodeBase64('$COMPRESS_TYPE')
                     }
                     else {
                         decodedOriginFile = "$ORIGIN_FILE"
